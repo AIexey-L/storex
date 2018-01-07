@@ -38,4 +38,24 @@ defmodule Storex.Sales do
       Repo.delete!(line_item)
     end
   end
+
+  def list_line_items(cart) do
+    LineItem
+    |> where(cart_id: ^cart.id)
+    |> preload(:book)
+    |> Repo.all()
+  end
+
+  def line_items_quantity_count(items) do
+    Enum.reduce(items, 0, fn(item, acc) -> acc + item.quantity end)
+  end
+
+  def line_items_total_price(items) do
+    Enum.reduce(items, Decimal.new(0), fn(item, acc) ->
+      quantity = Decimal.new(item.quantity)
+      partial = Decimal.mult(quantity, item.book.price)
+
+      Decimal.add(acc, partial)
+    end)
+  end
 end
