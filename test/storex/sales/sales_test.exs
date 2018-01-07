@@ -95,21 +95,9 @@ defmodule Storex.SalesTest do
     end
 
     test "line_items_total_price/1 returns the total price of items" do
-      {:ok, book1} = Store.create_book(%{
-        title: "Title",
-        description: "Description",
-        image_url: "product.jpg",
-        price: "10.00"
-        })
-
-        {:ok, book2} = Store.create_book(%{
-          title: "Title 2",
-          description: "Description 2",
-          image_url: "product.jpg",
-          price: "15.00"
-          })
-
-          {:ok, cart} = Sales.create_cart()
+      book1 = book_fixture(price: "10.00")
+      book2 = book_fixture(price: "15.00")
+      cart = cart_fixture()
 
           Sales.add_book_to_cart(book1, cart)
           Sales.add_book_to_cart(book1, cart)
